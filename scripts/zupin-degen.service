@@ -1,0 +1,14 @@
+[Unit]
+Description=Zupin_Degen paper trading bot
+After=network.target
+
+[Service]
+Type=simple
+WorkingDirectory=/opt/zupin-degen
+ExecStart=/opt/zupin-degen/venv/bin/python -m src.main
+Restart=on-failure
+RestartSec=10
+EnvironmentFile=/opt/zupin-degen/.env
+
+[Install]
+WantedBy=multi-user.target

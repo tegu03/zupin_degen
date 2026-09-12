@@ -1,0 +1,73 @@
+# Semua parameter di sini bisa diubah tanpa sentuh kode Python.
+# Restart bot setelah mengubah file ini.
+
+filter:
+  # Skor minimum (0-100) agar sebuah call diteruskan ke paper trader.
+  min_score: 65
+
+  # --- Market cap saat call masuk ---
+  # MC terlalu kecil = risiko rug tinggi, terlalu besar = ruang naik terbatas.
+  mc_min_usd: 10000
+  mc_max_usd: 150000
+  mc_sweet_spot_weight: 20     # poin skor kalau MC ada di rentang ideal
+
+  # --- Liquidity ---
+  liq_min_usd: 5000
+  liq_to_mc_ratio_min: 0.15    # liq/MC minimal, indikasi bukan liquidity tipis
+  liquidity_weight: 15
+
+  # --- Holder & konsentrasi ---
+  holders_min: 100
+  top10_concentration_max_pct: 45   # tolak kalau top-10 holder pegang > 45%
+  holder_weight: 15
+
+  # --- Aktivitas trading ---
+  buy_sell_ratio_min: 1.1      # jumlah buys/sells minimal
+  volume_to_mc_ratio_min: 0.5  # vol 1h / MC minimal, indikasi ada momentum
+  activity_weight: 20
+
+  # --- Reputasi wallet sumber (kalau ada di card) ---
+  wallet_winrate_min_pct: 35
+  wallet_realized_profit_positive: true
+  wallet_weight: 15
+
+  # --- Tag & audit ---
+  preferred_tags: ["SMART MONEY"]
+  tag_weight: 10
+  require_no_honeypot_flag: true
+  require_buy_sell_tax_max_pct: 5
+  audit_weight: 5
+
+trading:
+  # Saldo virtual awal (paper money, satuan USD)
+  starting_balance_usd: 1000
+
+  # Ukuran posisi per trade (virtual)
+  position_size_usd: 50
+  max_concurrent_positions: 15
+
+  # Take profit bertahap (persentase posisi dijual di tiap level multiplier)
+  take_profit_ladder:
+    - {multiplier: 3, sell_pct: 30}
+    - {multiplier: 5, sell_pct: 30}
+    - {multiplier: 10, sell_pct: 40}
+
+  # Stop loss / kondisi keluar paksa
+  stop_loss_pct: -50            # keluar kalau harga turun 50% dari entry
+  liquidity_drop_exit_pct: -50  # keluar kalau liquidity turun 50% dari puncak
+  trailing_stop_after_multiplier: 3   # aktifkan trailing stop setelah capai 3x
+  trailing_stop_pct: 20               # trailing 20% dari harga tertinggi
+
+  # Batas waktu tunggu kalau posisi tidak bergerak signifikan
+  max_hold_hours: 48
+
+price_feed:
+  provider: dexscreener
+  poll_interval_seconds: 30
+  chain: robinhood   # sesuaikan dengan slug chain di DexScreener
+
+notifier:
+  send_entry_alerts: true
+  send_exit_alerts: true
+  daily_summary: true
+  daily_summary_hour_utc: 0

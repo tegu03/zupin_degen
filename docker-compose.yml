@@ -1,0 +1,12 @@
+services:
+  zupin-degen:
+    build: .
+    container_name: zupin-degen
+    restart: unless-stopped
+    env_file: .env
+    volumes:
+      - ./data:/app/data
+      - ./config:/app/config
+    # Perhatian: login Telethon pertama kali butuh input OTP interaktif.
+    # Jalankan sekali dengan `docker compose run --rm zupin-degen python -m src.main`
+    # (tanpa -d) untuk login, baru setelah session tersimpan jalankan -d.

@@ -1,0 +1,7 @@
+telethon>=1.36
+aiohttp>=3.9
+python-telegram-bot>=21.0
+pyyaml>=6.0
+python-dotenv>=1.0
+sqlalchemy>=2.0
+tenacity>=8.2
